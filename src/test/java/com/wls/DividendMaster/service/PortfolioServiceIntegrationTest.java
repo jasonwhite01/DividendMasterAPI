@@ -56,7 +56,7 @@ class PortfolioServiceIntegrationTest {
 		portfolioService.savePortfolio("testPortfolio3", "X,Y,Z", userRepo.findById(TEST_USER_ID).get());
 		int numberOfPortfoliosAfterAddition = portfolioService.getAll().size();
 		assertTrue(numberOfPortfoliosAfterAddition > numberOfPortfoliosBeforeAddition);
-		assertThat(portfolioRepo.findByPortfolioName("testPortfolio3").getPortfolioStonks(), is("X,Y,Z"));	
+		assertThat(portfolioRepo.findByPortfolioName("testPortfolio3").get(0).getPortfolioStonks(), is("X,Y,Z"));	
 	}
 
 }

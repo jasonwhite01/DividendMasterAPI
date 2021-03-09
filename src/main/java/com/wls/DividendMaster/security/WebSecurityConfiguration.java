@@ -26,7 +26,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Entry points
         http.authorizeRequests()
 //                .antMatchers("/dividend/**").permitAll()	
-                .antMatchers("/portfolio/**").permitAll()
+                .antMatchers("/portfolios/**").permitAll()
+                .antMatchers("/portfolio/save").permitAll()
         		.antMatchers("/").permitAll()
         		.antMatchers("/users/signin").permitAll()
                 .antMatchers("/h2-console/*").permitAll()

@@ -10,7 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +36,7 @@ public class PortfolioController {
     private UserService userService;
 
     @PostMapping("/save")
-    @PreAuthorize("hasRole('ROLE_PAYING_CUSTOMER')")
+    @PreAuthorize("hasRole('ROLE_PAYING_CUSTOMER') or hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody @Valid PortfolioDto portfolioDto) {
     	User portfolioUser = null;
@@ -53,9 +55,17 @@ public class PortfolioController {
 //        return userService.signup(loginDto.getUsername(), loginDto.getPassword(), loginDto.getFirstName(),
 //                loginDto.getLastName()).orElseThrow(() -> new HttpServerErrorException(HttpStatus.BAD_REQUEST,"User already exists"));
 //    }
+    
+    @CrossOrigin
+    @GetMapping("/portfolio/{portfolioName}")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    public List<Portfolio> getPortfolio(@PathVariable(value = "portfolioName") String portfolioName) {
+        return portfolioService.getPortfolioByName(portfolioName);
+    }
 
+    @CrossOrigin
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Portfolio> getAllPortfolios() {
         return portfolioService.getAll();
     }

@@ -27,9 +27,9 @@ public class PortfolioTests {
     private UserRepository userRepository;
      
     @Test
-    public void testSaveNewProduct() {
+    public void testSaveNewPortfolio() {
         entityManager.persist(new Portfolio(TEST_PORTFOLIO_NAME,"A,B,C", userRepository.findById(TEST_USER_ID).get()));
-        assertThat(portfolioRepository.findByPortfolioName(TEST_PORTFOLIO_NAME).getPortfolioName(), is(TEST_PORTFOLIO_NAME));
+        assertThat(portfolioRepository.findByPortfolioName(TEST_PORTFOLIO_NAME).get(0).getPortfolioName(), is(TEST_PORTFOLIO_NAME));
     }
 
 }

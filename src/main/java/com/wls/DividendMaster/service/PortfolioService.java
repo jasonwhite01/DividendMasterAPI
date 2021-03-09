@@ -34,18 +34,33 @@ public class PortfolioService {
      */
     public void savePortfolio(String portfolioName, String portfolioStonks, User user) {
     	
-    	Portfolio portfolio = portfolioRepository.findByPortfolioName(portfolioName);
+    	Portfolio portfolio = null; 
+    	
+    	List<Portfolio> portfolios = portfolioRepository.findByPortfolioName(portfolioName);
     	//first lookup portfolio name to see if it exists or not already
-    	if(Objects.isNull(portfolio)) {
+    	if(Objects.isNull(portfolios) || portfolios.isEmpty()) {
     		//create new portfolio
     		portfolio = portfolioRepository.save(new Portfolio(portfolioName, portfolioStonks, user));
     	} else { 
+    		portfolio = portfolios.get(0);
     		portfolio.setPortfolioStonks(portfolioStonks); 
     		portfolio = portfolioRepository.save(portfolio);
     	}
     }
+    
+    /**
+     * Get one portfolio by name
+     * @param portfolioName
+     * @return
+     */
+    public List<Portfolio> getPortfolioByName(String portfolioName) {
+    	return portfolioRepository.findByPortfolioName(portfolioName);    	
+    }
 
-    //get all portfolios, if desired
+    /**
+     * Get all portfolios
+     * @return
+     */
     public List<Portfolio> getAll() {
         return portfolioRepository.findAll();
     }

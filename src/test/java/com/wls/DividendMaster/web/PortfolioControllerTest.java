@@ -57,26 +57,34 @@ public class PortfolioControllerTest {
     }
 	
 	@Test
+    public void getOnePortfolio() {
+	    
+	    System.out.println("hello");
+	    
+		ResponseEntity<String> response = restTemplate.exchange("/portfolios/portfolio/testPortfolio1", GET, new HttpEntity(jwtRequestHelper.withRole("ROLE_ADMIN")), String.class);//, PortfolioDto.class);//new ParameterizedTypeReference<Portfolio>() {});
+
+        assertThat(response.getStatusCode().value(), is(200));
+    }
+	
+	@Test
     public void updateExistingPortfolio() {
 		
-		PortfolioDto portfolioDto = new PortfolioDto(TEST_PORTFOLIO_NAME, TEST_PORTFOLIO_STONKS, TEST_USER_ID);
-	    Portfolio testPortfolio = new Portfolio(portfolioDto.getPortfolioName(), portfolioDto.getPortfolioStonks(), userService.findUserById(USER_ID_INT_VALUE).get());
+		PortfolioDto portfolioDto = new PortfolioDto(TEST_PORTFOLIO_NAME, "XYZ, ABC", TEST_USER_ID);
+	    //Portfolio testPortfolio = new Portfolio(portfolioDto.getPortfolioName(), portfolioDto.getPortfolioStonks(), userService.findUserById(USER_ID_INT_VALUE).get());
 		
 		ResponseEntity<Portfolio> response = restTemplate.exchange("/portfolios/save", POST, new HttpEntity(portfolioDto, jwtRequestHelper.withRole("ROLE_ADMIN")), Portfolio.class);
 
-        assertThat(response.getStatusCode().value(), is(200));
-        assertThat(response.getBody().getPortfolioName(), is(testPortfolio.getPortfolioName()));
+        assertThat(response.getStatusCode().value(), is(201));
     }
 	
 	@Test
     public void saveNewPortfolio() {
 		
 		PortfolioDto portfolioDto = new PortfolioDto(TEST_PORTFOLIO_NAME, TEST_PORTFOLIO_STONKS, TEST_USER_ID);
-	    Portfolio testPortfolio = new Portfolio(portfolioDto.getPortfolioName(), portfolioDto.getPortfolioStonks(), userService.findUserById(USER_ID_INT_VALUE).get());
+	    //Portfolio testPortfolio = new Portfolio(portfolioDto.getPortfolioName(), portfolioDto.getPortfolioStonks(), userService.findUserById(USER_ID_INT_VALUE).get());
 		
 		ResponseEntity<Portfolio> response = restTemplate.exchange("/portfolios/save", POST, new HttpEntity(portfolioDto, jwtRequestHelper.withRole("ROLE_PAYING_CUSTOMER")), Portfolio.class);
 
-        assertThat(response.getStatusCode().value(), is(200));
-        assertThat(response.getBody().getPortfolioName(), is(testPortfolio.getPortfolioName()));
+        assertThat(response.getStatusCode().value(), is(201));        
     }
 }
